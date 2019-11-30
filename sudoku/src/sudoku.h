@@ -55,7 +55,78 @@ public:
     }
 
     bool solve() {
-        // homework
-        return false;   // placeholder
+		int row;
+		int col;
+
+		if (FindUnassignedLocation(row, col) == false) {
+			return true;
+		}
+			
+		for (int num = 1; num <= 9; num++) {		  
+			if (isSafe(row, col, num)) {		
+				grid[row][col] = num;
+				if (solve()) {
+					return true;
+				}
+				grid[row][col] = 0;
+			}
+		}
+		return false; 
     }
+
+	bool FindUnassignedLocation(int& row, int& col ) {
+		for (row = 0; row < 9; row++) {
+			for (col = 0; col < 9; col++) {
+				if (grid[row][col] == 0)
+					return true;
+			}
+		}
+		return false;
+	}
+
+	bool UsedInRow(int row, int num) {
+		for (int col = 0; col < 9; col++) {
+			if (grid[row][col] == num) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool UsedInCol(int col, int num) {
+		for (int row = 0; row < 9; row++) {
+			if (grid[row][col] == num) {
+			return true;
+			}
+		}
+		return false;
+	}
+
+	bool UsedInBox(int row, int col, int num) {
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				if (grid[i + row][j + col] == num) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	bool isSafe(int row, int col, int num) {
+		
+		if (UsedInRow(row, num) == true) {
+			return false;
+		}
+		if (UsedInCol(col, num) == true) {
+			return false;
+		}
+		if (UsedInBox(row - row % 3, col - col % 3, num) == true) {
+			return false;
+		}
+		if (grid[row][col] == 0) {
+			return true;
+		}
+		
+	}
 };
