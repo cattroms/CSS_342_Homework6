@@ -55,57 +55,35 @@ public:
     }
 
     bool solve() {
+		/* Masive, massive help from this website: https://www.geeksforgeeks.org/sudoku-backtracking-7/
+		Modified version stemming from their ideas.
+		*/
 		int row;
 		int col;
 
-		if (FindUnassignedLocation(row, col) == false) {
+		if (gridIncomplete(row, col) == false) { // If there are no more squares to complete, return true
 			return true;
 		}
 			
+		// Tests all possible numbers, 1-9
 		for (int num = 1; num <= 9; num++) {		  
-			if (isSafe(row, col, num)) {		
+			if (isValid(row, col, num) == true) { // In this particular square, is this number valid, if so, fill it in
 				grid[row][col] = num;
-				if (solve()) {
+
+				if (solve() == true) { // If this breaks nothing else, return true
 					return true;
 				}
-				grid[row][col] = 0;
+
+				grid[row][col] = 0; // Otherwise, empty the square and start again
 			}
 		}
 		return false; 
     }
 
-	bool FindUnassignedLocation(int& row, int& col ) {
+	bool gridIncomplete(int& row, int& col ) { // Checks if there are any more incomplete squares
 		for (row = 0; row < 9; row++) {
 			for (col = 0; col < 9; col++) {
-				if (grid[row][col] == 0)
-					return true;
-			}
-		}
-		return false;
-	}
-
-	bool UsedInRow(int row, int num) {
-		for (int col = 0; col < 9; col++) {
-			if (grid[row][col] == num) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	bool UsedInCol(int col, int num) {
-		for (int row = 0; row < 9; row++) {
-			if (grid[row][col] == num) {
-			return true;
-			}
-		}
-		return false;
-	}
-
-	bool UsedInBox(int row, int col, int num) {
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				if (grid[i + row][j + col] == num) {
+				if (grid[row][col] == 0) { // If something is incomplete, go there to test things
 					return true;
 				}
 			}
@@ -113,20 +91,38 @@ public:
 		return false;
 	}
 
-	bool isSafe(int row, int col, int num) {
+
+	bool isValid(int row, int col, int num) {
 		
-		if (UsedInRow(row, num) == true) {
-			return false;
-		}
-		if (UsedInCol(col, num) == true) {
-			return false;
-		}
-		if (UsedInBox(row - row % 3, col - col % 3, num) == true) {
-			return false;
-		}
-		if (grid[row][col] == 0) {
-			return true;
+		// if there is no match in the row, continue
+		for (int rowTest = 0; rowTest < 9; rowTest++) {
+			if (grid[row][rowTest] == num) {
+				return false;
+			}
 		}
 		
+		// if there is no match in the column, continue
+		for (int colTest = 0; colTest < 9; colTest++) {
+			if (grid[colTest][col] == num) {
+				return false;
+			}
+		}
+
+		// if there is no match in this box, continue
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				if (grid[i + (row - (row % 3))][j + (col - (col % 3))] == num) {
+					return false;
+				}
+			}
+		}
+
+		// if the space is not occupied, continue
+		if (grid[row][col] != 0) {
+			return false;
+		}
+		
+		// it is a valid number
+		return true;
 	}
 };

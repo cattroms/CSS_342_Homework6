@@ -1,3 +1,0 @@
-/mnt/c/users/scott/onedrive/desktop/css_342_homework/homework6/sudoku/lib/googletest/CMakeFiles/rebuild_cache.dir
-/mnt/c/users/scott/onedrive/desktop/css_342_homework/homework6/sudoku/lib/googletest/CMakeFiles/googletest.dir
-/mnt/c/users/scott/onedrive/desktop/css_342_homework/homework6/sudoku/lib/googletest/CMakeFiles/edit_cache.dir
