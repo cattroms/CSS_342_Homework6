@@ -142,12 +142,17 @@ public:
     }
 
     bool remove(KeyType const &key) override {
+		
+		// if dictionary is empty, return false
 		if (contain(key) == false) {
 			return false;
 		}
 
+		// otherwise, go to the key
 		int hashedKey = hashFunc(key);
-		count--;
+		count--; // decrement count to not break other functions
+		
+		// At this key, delete all the nodes
 		Entry<KeyType, ValueType>* ptr = entries[hashedKey];
 		while (ptr != nullptr) {
 			Entry<KeyType, ValueType>* temp = ptr;
