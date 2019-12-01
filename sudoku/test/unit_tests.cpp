@@ -1,25 +1,53 @@
 #include "gtest/gtest.h"
 #include "sudoku.h"
 
+void setTestAnswer(int answer[][9]) {
+	for (int i = 0; i < 9; i++) {
+		for (int j = 0; j < 9; j++) {
+			answer[i][j] = 9 * i + j;
+		}
+	}
+}
+
 TEST(sudoku, constructor) {
-    int answer[9][9];
-    for (int i=0; i<9; i++) {
-        for (int j = 0; j < 9; j++) {
-            answer[i][j] = 9 * i + j;
-        }
-    }
+	int answer[9][9];
+	setTestAnswer(answer);
 
-    Sudoku sudoku(answer);
-    sudoku.print();
-    Sudoku otherSudoku(sudoku);
+	Sudoku sudoku(answer);
+	sudoku.print();
+	Sudoku otherSudoku(sudoku);
 
-    ASSERT_TRUE(sudoku==answer);
-    answer[0][0] = 9;
-    ASSERT_FALSE(sudoku==answer);
+	// test sudoku object == with array overload
+	ASSERT_TRUE(sudoku == answer);
+	answer[0][0] = -99;
+	ASSERT_FALSE(sudoku == answer);
 
-    ASSERT_TRUE(sudoku==otherSudoku);
-    otherSudoku.set(0, 0, 9);
-    ASSERT_FALSE(sudoku==otherSudoku);
+	setTestAnswer(answer);
+	answer[3][3] = -99;
+	ASSERT_FALSE(sudoku == answer);
+
+	setTestAnswer(answer);
+	answer[8][8] = -99;
+	ASSERT_FALSE(sudoku == answer);
+
+	// test sudoku object == overload
+	ASSERT_TRUE(sudoku == otherSudoku);
+	otherSudoku.set(0, 0, 9);
+	ASSERT_FALSE(sudoku == otherSudoku);
+
+	otherSudoku.set(0, 0, sudoku.get(0, 0)); // reset grid
+	ASSERT_TRUE(sudoku == otherSudoku);
+
+	otherSudoku.set(3, 3, -99);
+	ASSERT_FALSE(sudoku == otherSudoku);
+
+	otherSudoku.set(3, 3, sudoku.get(3, 3)); // reset grid
+	ASSERT_TRUE(sudoku == otherSudoku);
+	otherSudoku.set(8, 8, -99);
+	ASSERT_FALSE(sudoku == otherSudoku);
+#ifdef PRINT
+	otherSudoku.print();
+#endif
 }
 
 TEST(sudoku, case1) {

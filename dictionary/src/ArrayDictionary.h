@@ -131,10 +131,16 @@ public:
 
 		// otherwise, check that there is something under that key
 		int hashedKey = hashFunc(key);
-		if (entries[hashedKey] == nullptr) { 
-			return false; 
+		Entry<KeyType, ValueType>* ptr = entries[hashedKey];
+		while (ptr != nullptr) {
+			Entry<KeyType, ValueType>* temp = ptr;
+			ptr = ptr->next;
+			if (temp->key == key) { // check if this specifc key is there (not hashed)
+				return true;
+			}
 		}
-		return true;
+
+		return false;
     }
 
     void traverse() override {
@@ -151,15 +157,29 @@ public:
 		// otherwise, go to the key
 		int hashedKey = hashFunc(key);
 		count--; // decrement count to not break other functions
-		
-		// At this key, delete all the nodes
+		bool retVal = false;
+
+		// besides first element, go through list and delete all matching keys
 		Entry<KeyType, ValueType>* ptr = entries[hashedKey];
-		while (ptr != nullptr) {
-			Entry<KeyType, ValueType>* temp = ptr;
-			ptr = ptr->next;
-			delete temp;
+		while (ptr != nullptr && ptr->next != nullptr) {
+			Entry<KeyType, ValueType>* temp = ptr->next;
+			if (temp->key == key) { // if this key matches, move pointers accordingly and delete key
+				ptr->next = temp->next;
+				delete temp;
+				retVal = true; // also make sure we remember we deleted something
+			}
+			ptr = ptr->next; // otherwise, move through
 		}
 
-		return true;
+		// now test the first element and see if it needs to be deleted
+		Entry<KeyType, ValueType>* first = entries[hashedKey];
+		if (first->key == key) {
+			entries[hashedKey] = first->next;
+			delete first;
+			retVal = true; // still have to remember we deleted something
+		}
+
+		return retVal;
     }
+
 };

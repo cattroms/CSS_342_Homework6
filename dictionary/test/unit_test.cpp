@@ -83,7 +83,7 @@ TEST(dict, contains) {
 	
 	// --------------- SET 2 TEST CASES ---------------
 	// dictionary intitializations and adds
-	ArrayDictionary<int, int> setTwoDict;
+	ArrayDictionary<int, int> setTwoDict(1);
 	setTwoDict.add(0, 103);
 
 	// assertions for given test cases
@@ -92,7 +92,7 @@ TEST(dict, contains) {
 
 	// --------------- SET 3 TEST CASES ---------------
 	// dictionary intitializations and adds
-	ArrayDictionary<int, int> setThreeDict;
+	ArrayDictionary<int, int> setThreeDict(2);
 	setThreeDict.add(0, 103);
 	setThreeDict.add(1, 105);
 
@@ -104,8 +104,8 @@ TEST(dict, contains) {
 
 	// --------------- SET 4 TEST CASES ---------------
 	// dictionary intitializations and adds
-	ArrayDictionary<int, int> setFourDict1;
-	ArrayDictionary<int, int> setFourDict2;
+	ArrayDictionary<int, int> setFourDict1(3);
+	ArrayDictionary<int, int> setFourDict2(3);
 	setFourDict1.add(0, 103);
 	setFourDict1.add(1, 105);
 	setFourDict2.add(0, 103);
@@ -118,7 +118,7 @@ TEST(dict, contains) {
 
 	// --------------- SET 5 TEST CASES ---------------
 	// dictionary intitializations and adds
-	ArrayDictionary<int, int> setFiveDict;
+	ArrayDictionary<int, int> setFiveDict(3);
 	setFiveDict.add(0, 103);
 	setFiveDict.add(1, 105);
 	setFiveDict.add(2, 206);
@@ -174,7 +174,7 @@ TEST(dict, remove) {
 	// dictionary intitializations and adds
 	ArrayDictionary<int, int> testFive;
 	testFive.add(0, 103);
-	testFive.add(0, 104);
+	testFive.add(10, 104);
 
 	// assertions for given test cases
 	ASSERT_FALSE(testFive.remove(1));
